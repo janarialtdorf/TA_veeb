@@ -1,0 +1,29 @@
+{
+  "name": "ta_veeb_jaltdorf",
+  "version": "1.0.0",
+  "description": "Tarkvaraarendajate rühma veebiprogrammeerimise kursuse veeb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://janarialtdorf@github.com/janarialtdorf/TA_veeb.git"
+  },
+  "keywords": [
+    "Õppetöö",
+    "node.js",
+    "express.js",
+    "Tallinna",
+    "Ülikool"
+  ],
+  "author": "Janari Altdorf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janarialtdorf/TA_veeb/issues"
+  },
+  "homepage": "https://github.com/janarialtdorf/TA_veeb#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
