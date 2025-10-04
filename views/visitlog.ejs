@@ -10,10 +10,14 @@
   <p> See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>
   <hr>
   <ul>
-    <li><a href ="/timenow">Ajainfo</a></li>
-	<li><a href ="/vanasonad">Vanasõnad</a></li>
-	<li><a href ="/regvisit">Pane oma külastus kirja</a></li>
-	<li><a href ="/visitlog">Külastuste nimekiri</a></li>
+	<li><a href ="/">Avaleht</a></li>
+  </ul>
+  <hr>
+  <h2><%= heading %></</h2>
+  <ul>
+    <% listData.forEach(function(listItem){ %>
+	    <li><%= listItem %></li>
+	<% }); %>
   </ul>
 </body>
 </html>
