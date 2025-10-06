@@ -3,6 +3,8 @@ const dateET = require("./src/dateTimeET");
 const fs = require ("fs");
 //päringu lahtiharutaja POST jaoks:
 const bodyparser = require("body-parser");
+const mysql = require("mysql2");
+const dbInfo = require("../../../vp2025config");
 const textRef = "public/txt/vanasonad.txt";
 const logRef = "public/txt/visitlog.txt";
 //käivitan express.js funktsiooni ja annan talle nimeks "app".
@@ -13,6 +15,14 @@ app.set("view engine", "ejs");
 app.use(express.static("public"));
 //Parsime päringu URL-i, lipp false, kui ainult tekst ja true, kui muid andmeid ka:
 app.use(bodyparser.urlencoded({extended: false}));
+
+//Andmebaasi ühendus
+const conn = mysql.createConnection({
+	host: dbInfo.configData.host,
+	user: dbInfo.configData.user,
+	password: dbInfo.configData.passWord,
+	database: "if25_jaltdorf"
+});
 
 app.get("/", (req, res)=>{
 	//res.send("Express.js läks käima ja serveerib veebi!");
@@ -56,7 +66,7 @@ app.post("/regvisit", (req, res)=>{
 		}
 		else{
 			//faili senisele sisule lisamine
-		fs.appendFile("public/txt/visitlog.txt", req.body.firstNameInput + " " + req.body.lastNameInput + " " + dateET.fullDate() + " " + "kell: " + dateET.fullTime() +  "; ", (err)=>{
+		fs.appendFile("public/txt/visitlog.txt", req.body.firstNameInput + " " + req.body.lastNameInput + " " + dateET.fullDate() + " " + "kell: " + dateET.fullTime() + "; ", (err)=>{
 			if(err){
 				throw(err);
 			}
@@ -78,9 +88,91 @@ app.get("/visitlog", (req, res)=>{
 		}
 		else{
 			visitLog = data.split(";");
-			res.render("visitlog", {heading: "Külastuste nimekiri", listData: visitLog});
+			let correctListData = [];
+			for(let i = 0; i < visitLog.length - 1; i ++){
+				correctListData.push(visitLog[i]);
+			}
+			res.render("visitlog", {heading: "Külastuste nimekiri", listData: correctListData});
 		}
 	});
 });
 
-app.listen(5101);
+app.get("/eestifilm", (req, res)=>{
+	res.render("eestifilm");
+});
+
+app.get("/eestifilm/inimesed", (req, res)=>{
+	const sqlReq = "SELECT * FROM person";
+	conn.execute(sqlReq, (err, sqlres)=>{
+		if(err){
+			throw(err);
+		}
+		else{
+			console.log(sqlres);
+			res.render("filmiinimesed", {personList: sqlres});
+		}
+	});
+	//res.render("filmiinimesed");
+});
+
+app.get("/eestifilm/inimesed_add", (req, res)=>{
+	res.render("filmiinimesed_add", {notice: "Ootan sisestust"});
+});
+
+app.post("/eestifilm/inimesed_add", (req, res)=>{
+	console.log(req.body);
+	//kas andmed on olemas
+	if(!req.body.firstNameInput || !req.body.lastNameInput || !req.body.bornInput || req.body.bornInput >= new Date()){
+		res.render("filmiinimesed_add", {notice: "Osa andmeid oli puudu või ebakorrektsed."});
+	}
+	else {
+		let sqlReq = "INSERT INTO person(first_name, last_name, born, deceased) VALUES (?,?,?,?)";
+	    conn.execute(sqlReq, [req.body.firstNameInput, req.body.lastNameInput, req.body.bornInput, req.body.deceasedInput], (err, sqlres)=>{
+		    if(err){
+			    res.render("filmiinimesed_add", {notice: "Andmete salvestamine ebaõnnestus."});
+		    }
+			else {
+				res.render("filmiinimesed_add", {notice: "Andmed salvestatud!"});
+			}
+	    });
+		
+	}
+});
+
+app.get("/eestifilm/filmid", (req, res)=>{
+	const sqlReq = "SELECT * FROM movie";
+	conn.execute(sqlReq, (err, sqlres)=>{
+		if(err){
+			throw(err);
+		}
+		else{
+			console.log(sqlres);
+			res.render("filmid", {movieList: sqlres});
+		}
+	});
+});
+
+app.get("/eestifilm/filmid_add", (req, res)=>{
+	res.render("filmid_add", {notice: "Ootan sisestust"});
+});
+
+app.post("/eestifilm/filmid_add", (req, res)=>{
+	console.log(req.body);
+	if(!req.body.titleInput || !req.body.prodYearInput || !req.body.durationInput || !req.body.descInput){
+		res.render("filmid_add", {notice: "Osa andmeid oli puudu või ebakorrektsed."});
+	}
+	else {
+		let sqlReq = "INSERT INTO movie(title, production_year, duration, description) VALUES (?,?,?,?)";
+	    conn.execute(sqlReq, [req.body.titleInput, req.body.prodYearInput, req.body.durationInput, req.body.descInput], (err, sqlres)=>{
+		    if(err){
+			    res.render("filmid_add", {notice: "Andmete salvestamine ebaõnnestus."});
+		    }
+			else {
+				res.render("filmid_add", {notice: "Andmed salvestatud!"});
+			}
+	    });
+		
+	}
+});
+
+app.listen(5101);  

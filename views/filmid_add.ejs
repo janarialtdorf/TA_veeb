@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <title>Janari Altdorf, veebiprogrammeerimine</title>
+</head>
+<body>
+  <img src="../images/vp_banner_2025_TA.jpg" alt="kursuse banner">
+  <h1> Janari Altdorf, veebiprogrammeerimine</h1>
+  <p> See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>
+  <hr>
+  <ul>
+    <li><a href ="/">Avaleht</a></li>
+	<li><a href ="/eestifilm">Eesti film</a></li>
+  </ul>
+  <hr>
+  <h2>Eesti filmiinimesed</h2>
+ <form method="POST">
+    <label for="titleInput">Filmi pealkiri</label>
+	<input id="titleInput" name="titleInput" type="text" placeholder="Pealkiri" required>
+	<br>
+	<label for="prodYearInput">Tootmisaasta</label>
+	<input id="prodYearInput" name="prodYearInput" type="decimal" placeholder="Tootmisaasta" required>
+	<br>
+	<label for="durationInput">Filmi kestvus (min)</label>
+	<input id="durationInput" name="durationInput" type="decimal" placeholder="Kestvus" required>
+	<br>
+	<label for="descInput">Filmi kirjeldus</label>
+	<input id="descInput" name="descInput" type="text" placeholder="Kirjeldus">
+	<br>
+	<input id="movieSubmit" name="movieSubmit" type="submit" value="Salvesta">
+  </form>
+  <p>Staatus: <%= notice %></p>
+</body>
+</html>
