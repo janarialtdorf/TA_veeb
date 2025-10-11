@@ -12,18 +12,14 @@
   <ul>
     <li><a href ="/">Avaleht</a></li>
 	<li><a href ="/eestifilm">Eesti film</a></li>
+	<li><a href ="/eestifilm/ametid/lisa">Ameti lisamine</a></li>
   </ul>
   <hr>
-  <h2>Eesti filmiinimesed</h2>
-<ol>
-<% personList.forEach(function(listItem){ %>
-    <li>
-        <%= listItem.first_name %> <%= listItem.last_name %>, sündinud <%= listItem.born %>
-        <% if (listItem.deceased !== null) { %>
-            , Surnud <%= listItem.deceased %>
-        <% } %>
-    </li>
-<% }); %>
-</ol>
+  <h2>Filmivaldkonna ametid</h2>
+  <ol>
+    <% positionList.forEach(function(listItem){ %>
+	    <li><%= listItem.position_name  %>, Kirjeldus: <%= listItem.description  %></li>
+	<% }); %>
+  </ol>
 </body>
 </html>

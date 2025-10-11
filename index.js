@@ -175,4 +175,41 @@ app.post("/eestifilm/filmid_add", (req, res)=>{
 	}
 });
 
+app.get("/eestifilm/ametid", (req, res)=>{
+	const sqlReq = "SELECT * FROM position";
+	conn.execute(sqlReq, (err, sqlres)=>{
+		if(err){
+			throw(err);
+		}
+		else{
+			console.log(sqlres);
+			res.render("ametid", {positionList: sqlres});
+		}
+	});
+});
+
+app.get("/eestifilm/ametid/lisa", (req, res)=>{
+	res.render("ametid_add", {notice: "Ootan sisestust"});
+});
+
+app.post("/eestifilm/ametid/lisa", (req, res)=>{
+	console.log(req.body);
+	if(!req.body.positionInput || !req.body.positionDescriptionInput) {
+		res.render("ametid_add", {notice: "Osa andmeid oli puudu või ebakorrektsed."});
+	}
+	else {
+		let sqlReq = "INSERT INTO `position` (position_name, description) VALUES (?,?)";
+	    conn.execute(sqlReq, [req.body.positionInput, req.body.positionDescriptionInput], (err, sqlres)=>{
+		    if(err){
+				console.error("MySQL error:", err);
+			    res.render("ametid_add", {notice: "Andmete salvestamine ebaõnnestus."});
+		    }
+			else {
+				res.redirect("/eestifilm/ametid");
+			}
+	    });
+		
+	}
+});
+
 app.listen(5101);  
