@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <title>Janari Altdorf, veebiprogrammeerimine</title>
+</head>
+<body>
+  <img src="../images/vp_banner_2025_TA.jpg" alt="kursuse banner">
+  <h1> Janari Altdorf, veebiprogrammeerimine</h1>
+  <p> See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>
+  <hr>
+  <ul>
+    <li><a href ="/">Avaleht</a></li>
+	<li><a href ="/eestifilm">Eesti film</a></li>
+	<li><a href ="/eestifilm/seosed_add">Lisa seos</a></li>
+  </ul>
+  <hr>
+  <h2>Seosed</h2>
+  <select>
+    <% personList.forEach(function(listItem){ %>
+    <option value="1"><%= listItem.first_name %> <%= listItem.last_name %></option>
+    <% }); %>
+  </select>
+  <select>
+    <% movieList.forEach(function(listItem){ %>
+    <option value="1"><%= listItem.title %></option>
+    <% }); %>
+  </select>
+  <select>
+    <% positionList.forEach(function(listItem){ %>
+    <option value="1"><%= listItem.position_name %></option>
+    <% }); %>
+  </select>
+</body>
+</html>

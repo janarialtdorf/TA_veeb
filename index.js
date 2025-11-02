@@ -38,51 +38,11 @@ app.get("/vanasonad", (req, res)=>{
 	});
 });
 
-app.get("/regvisit", (req, res)=>{
-	res.render("regvisit");
-});
 
-app.get("/kulastus", (req, res)=>{
-	res.render("visitregistered");
-});
 
-app.post("/regvisit", (req, res)=>{
-	console.log(req.body);
-	fs.open("public/txt/visitlog.txt", "a", (err, file)=>{
-		if(err){
-			throw(err);
-		}
-		else{
-		fs.appendFile("public/txt/visitlog.txt", req.body.firstNameInput + " " + req.body.lastNameInput + " " + dateET.fullDate() + " " + "kell: " + dateET.fullTime() + "; ", (err)=>{
-			if(err){
-				throw(err);
-			}
-			else{
-				console.log("Salvestatud!");
-				res.render("visitregistered");
-			}
-		});
-		}
-	});
-	
-});
-
-app.get("/visitlog", (req, res)=>{
-	let visitLog = [];
-	fs.readFile(logRef, "utf8", (err, data)=>{
-		if(err){
-			res.render("visitlog", {heading: "Külastuste nimekiri", listData: ["Nimekiri puudub!"]});
-		}
-		else{
-			visitLog = data.split(";");
-			let correctListData = [];
-			for(let i = 0; i < visitLog.length - 1; i ++){
-				correctListData.push(visitLog[i]);
-			}
-			res.render("visitlog", {heading: "Külastuste nimekiri", listData: correctListData});
-		}
-	});
-});
+//külastuste marsruudid
+const külastusRouter = require("./routes/külastusRoutes");
+app.use("/visitlog", külastusRouter);
 
 //eestifilm marsruudid
 const eestifilmRouter = require("./routes/eestifilmRoutes");

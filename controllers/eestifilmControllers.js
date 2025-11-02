@@ -90,6 +90,28 @@ const inimesedAddPost = async (req, res)=>{
 	}
 };
 
+const filmid = async (req, res)=>{
+	let conn;
+	const sqlReq = "SELECT * FROM movie";
+	try{
+		conn = await mysql.createConnection(dbConf);
+		console.log("Andmebaasiühendus loodud!")
+		const [rows, fields] = await conn.execute(sqlReq);
+		res.render("filmid", {movieList: rows});
+	}
+	catch(err) {
+		console.log("Viga: " + err);
+		res.render("filmid", {movieList: []});
+	}
+	finally {
+		if(conn){
+			await conn.end();
+			console.log("Andmebaasiühendus on suletud.");
+		}
+	}
+	
+};
+
 /* app.get("/eestifilm/filmid", (req, res)=>{
 	const sqlReq = "SELECT * FROM movie";
 	conn.execute(sqlReq, (err, sqlres)=>{
@@ -102,70 +124,176 @@ const inimesedAddPost = async (req, res)=>{
 		}
 	});
 });
-
-app.get("/eestifilm/filmid_add", (req, res)=>{
+ */
+//app.get("/eestifilm/filmid_add", (req, res)=>{
+const filmidAdd = (req, res)=>{
 	res.render("filmid_add", {notice: "Ootan sisestust"});
-});
+};
 
-app.post("/eestifilm/filmid_add", (req, res)=>{
-	console.log(req.body);
+const filmidAddPost = async (req, res)=>{
+	let conn;
+	let sqlReq = "INSERT INTO movie(title, production_year, duration, description) VALUES (?,?,?,?)";
+	
 	if(!req.body.titleInput || !req.body.prodYearInput || !req.body.durationInput || !req.body.descInput){
 		res.render("filmid_add", {notice: "Osa andmeid oli puudu või ebakorrektsed."});
 	}
-	else {
-		let sqlReq = "INSERT INTO movie(title, production_year, duration, description) VALUES (?,?,?,?)";
-	    conn.execute(sqlReq, [req.body.titleInput, req.body.prodYearInput, req.body.durationInput, req.body.descInput], (err, sqlres)=>{
-		    if(err){
-			    res.render("filmid_add", {notice: "Andmete salvestamine ebaõnnestus."});
-		    }
-			else {
-				res.render("filmid_add", {notice: "Andmed salvestatud!"});
+	else{
+		try{
+			conn = await mysql.createConnection(dbConf);
+		    console.log("Andmebaasiühendus loodud!")
+			const [result] = await conn.execute(sqlReq, [req.body.titleInput, req.body.prodYearInput, req.body.durationInput, req.body.descInput]);
+			console.log("Salvestati kirje: " + result.insertId);
+			res.render("filmid_add", {notice: "Andmed salvestatud!"});
+		}
+		catch(err){
+			console.log("Viga: " + err);
+			res.render("filmid_add", {notice: "Andmete salvestamine ebaõnnestus."});
+		}
+		finally{
+			if(conn){
+				await conn.end();
+				console.log("Andmebaasiühendus on suletud.");
 			}
-	    });
-		
+		}
 	}
-});
+};
 
-app.get("/eestifilm/ametid", (req, res)=>{
+const ametid = async (req, res)=>{
+	let conn;
 	const sqlReq = "SELECT * FROM position";
-	conn.execute(sqlReq, (err, sqlres)=>{
-		if(err){
-			throw(err);
+	try{
+		conn = await mysql.createConnection(dbConf);
+		console.log("Andmebaasiühendus loodud!")
+		const [rows, fields] = await conn.execute(sqlReq);
+		res.render("ametid", {positionList: rows});
+	}
+	catch(err){
+		console.log("Viga: " + err);
+		res.render("ametid", {positionList: []});
+	}
+	finally{
+		if(conn){
+			await conn.end();
+			console.log("Andmebaasiühendus on suletud.");
 		}
-		else{
-			console.log(sqlres);
-			res.render("ametid", {positionList: sqlres});
-		}
-	});
-});
+	}
+};
 
-app.get("/eestifilm/ametid/lisa", (req, res)=>{
+const ametidAdd = (req, res)=>{
 	res.render("ametid_add", {notice: "Ootan sisestust"});
-});
+};
 
-app.post("/eestifilm/ametid/lisa", (req, res)=>{
-	console.log(req.body);
+const ametidAddPost = async (req, res)=>{
+	let conn;
+	let sqlReq = "INSERT INTO `position` (position_name, description) VALUES (?,?)";
+	
 	if(!req.body.positionInput || !req.body.positionDescriptionInput) {
 		res.render("ametid_add", {notice: "Osa andmeid oli puudu või ebakorrektsed."});
 	}
 	else {
-		let sqlReq = "INSERT INTO `position` (position_name, description) VALUES (?,?)";
-	    conn.execute(sqlReq, [req.body.positionInput, req.body.positionDescriptionInput], (err, sqlres)=>{
-		    if(err){
-				console.error("MySQL error:", err);
-			    res.render("ametid_add", {notice: "Andmete salvestamine ebaõnnestus."});
-		    }
-			else {
-				res.redirect("/eestifilm/ametid");
+		try {
+			conn = await mysql.createConnection(dbConf);
+		    console.log("Andmebaasiühendus loodud!")
+			const [result] = await conn.execute(sqlReq, [req.body.positionInput, req.body.positionDescriptionInput]);
+			console.log("Salvestati kirje: " + result.insertId);
+			res.render("ametid_add", {notice: "Andmed salvestatud!"});
+		}
+		catch(err) {
+			console.log("Viga: " + err);
+			res.render("ametid_add", {notice: "Andmete salvestamine ebaõnnestus."});
+		}
+		finally {
+			if(conn){
+				await conn.end();
+				console.log("Andmebaasiühendus on suletud.");
 			}
-	    });
-		
+		}
 	}
-}); */
+};
+
+const seosed = async (req, res) => {
+	let conn;
+	try {
+		conn = await mysql.createConnection(dbConf);
+		console.log("Andmebaasiühendus loodud!");
+
+		const [persons] = await conn.execute("SELECT * FROM person");
+		const [movies] = await conn.execute("SELECT * FROM movie");
+		const [positions] = await conn.execute("SELECT * FROM position");
+
+		res.render("seosed", {
+			personList: persons,
+			movieList: movies,
+			positionList: positions
+		});
+	} catch (err) {
+		console.log("Viga: " + err);
+		res.render("seosed", {
+			personList: [],
+			movieList: [],
+			positionList: []
+		});
+	} finally {
+		if (conn) {
+			await conn.end();
+			console.log("Andmebaasiühendus on suletud.");
+		}
+	}
+};
+
+const seosedAdd = async (req, res) => {
+  let conn;
+  try {
+    conn = await mysql.createConnection(dbConf);
+    console.log("Andmebaasiühendus loodud!");
+
+    const [persons] = await conn.execute("SELECT * FROM person");
+    const [movies] = await conn.execute("SELECT * FROM movie");
+    const [positions] = await conn.execute("SELECT * FROM position");
+
+    res.render("seosed_add", {notice: "Ootan sisestust."});
+  } catch (err) {
+    console.log("Viga: " + err);
+	res.render("seosed_add", {notice: "Andmete salvestamine ebaõnnestus."});
+  } finally {
+    if (conn) {
+      await conn.end();
+      console.log("Andmebaasiühendus on suletud.");
+    }
+  }
+};
+
+const seosedAddPost = async (req, res)=>{
+ const { personSelect, movieSelect, positionSelect, role } = req.body;
+  let conn;
+  try {
+    conn = await mysql.createConnection(dbConf);
+    await conn.execute(
+      "INSERT INTO person_in_movie (person_id, movie_id, position_id, role) VALUES (?, ?, ?, ?)",
+      [personSelect, movieSelect, positionSelect, role || null]
+    );
+    res.render("seosed_add");
+  } catch (err) {
+    console.log("Viga seose lisamisel: " + err);
+    res.send("Viga seose lisamisel!");
+  } finally {
+    if (conn) await conn.end();
+  }
+};
 
 module.exports = {
 	eestifilm,
 	inimesed,
 	inimesedAdd,
-	inimesedAddPost
+	inimesedAddPost,
+	filmid,
+	filmidAdd,
+	filmidAddPost,
+	ametid,
+	ametidAdd,
+	ametidAddPost,
+	seosed,
+	seosedAdd,
+	seosedAddPost
+	
 };

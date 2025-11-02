@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="et">
+<head>
+  <meta charset="utf-8">
+  <title>Janari Altdorf, veebiprogrammeerimine</title>
+</head>
+<body>
+  <img src="../images/vp_banner_2025_TA.jpg" alt="kursuse banner">
+  <h1> Janari Altdorf, veebiprogrammeerimine</h1>
+  <p> See leht on loodud veebiprogrammeerimise kursusel <a href="https://www.tlu.ee">Tallinna Ülikoolis</a> ning ei sisalda tõsiseltvõetavat sisu!</p>
+  <hr>
+  <ul>
+    <li><a href ="/">Avaleht</a></li>
+	<li><a href ="/eestifilm">Eesti film</a></li>
+  </ul>
+  <hr>
+  <h2>Lisa seos</h2>
+  <form method="POST">
+    <label for="personSelect">Vali isik:</label><br>
+    <select id="personSelect" name="personSelect" required>
+      <option selected disabled>Vali isik</option>
+      <% personList.forEach(function(listItem){ %>
+        <option value="<%= listItem.id %>"><%= listItem.first_name %> <%= listItem.last_name %></option>
+      <% }); %>
+    </select>
+    <br><br>
+
+    <label for="movieSelect">Vali film:</label><br>
+    <select id="movieSelect" name="movieSelect" required>
+      <option selected disabled>Vali film</option>
+      <% movieList.forEach(function(listItem){ %>
+        <option value="<%= listItem.id %>"><%= listItem.title %></option>
+      <% }); %>
+    </select>
+    <br><br>
+
+    <label for="positionSelect">Vali amet:</label><br>
+    <select id="positionSelect" name="positionSelect" required>
+      <option selected disabled>Vali amet</option>
+      <% positionList.forEach(function(listItem){ %>
+        <option value="<%= listItem.id %>"><%= listItem.position_name %></option>
+      <% }); %>
+    </select>
+    <br><br>
+
+    <label for="role">Roll (kui on näitleja):</label><br>
+    <input type="text" id="role" name="role" placeholder="Sisesta rolli nimi">
+    <br><br>
+
+    <input id="movieSubmit" name="movieSubmit" type="submit" value="Salvesta">
+  </form>
+  <p>Staatus: <%= notice %></p>
+</body>
+</html>
