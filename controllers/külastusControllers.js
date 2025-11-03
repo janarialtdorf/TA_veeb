@@ -1,8 +1,12 @@
 const express = require("express");
 const fs = require ("fs");
-const textRef = "../public/txt/vanasonad.txt";
-const logRef = "../public/txt/visitlog.txt";
-const dateET = require("../public/src/dateTimeET.js");
+const textRef = "./public/txt/vanasonad.txt";
+const logRef = "./public/txt/visitlog.txt";
+const dateET = require("./public/src/dateTimeET.js");
+
+
+
+
 const külastusAddPost = (req, res)=>{
 	res.render("regvisit");
 };

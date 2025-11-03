@@ -12,7 +12,7 @@ app.set("view engine", "ejs");
 //Määran ühe päris kataloogi avalikult kättesaadavaks.
 app.use(express.static("public"));
 //Parsime päringu URL-i, lipp false, kui ainult tekst ja true, kui muid andmeid ka:
-app.use(bodyparser.urlencoded({extended: false}));
+app.use(bodyparser.urlencoded({extended: true}));
 
 app.get("/", (req, res)=>{
 	res.render("index");
@@ -41,11 +41,15 @@ app.get("/vanasonad", (req, res)=>{
 
 
 //külastuste marsruudid
-const külastusRouter = require("./routes/külastusRoutes");
-app.use("/visitlog", külastusRouter);
+/* const külastusRouter = require("./routes/külastusRoutes");
+app.use("/regvisit", külastusRouter); */
 
 //eestifilm marsruudid
 const eestifilmRouter = require("./routes/eestifilmRoutes");
 app.use("/eestifilm", eestifilmRouter);
+
+//Galerii fotode üleslaadimine
+const photoupRouter = require("./routes/photoupRoutes");
+app.use("/galleryphotoupload", photoupRouter);
 
 app.listen(5101);  
