@@ -8,8 +8,8 @@ const {
 	
 router.route("/").get(külastus);
 
-router.route("/visits").get(külastusAdd);
+router.route("/visitadd").get(külastusAdd);
 
-router.route("/regvisit").post(külastusAddPost);
+router.route("/visitadd").post(külastusAddPost);
 
 module.exports = router;

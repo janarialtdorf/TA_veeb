@@ -1,8 +1,8 @@
 const express = require("express");
 const fs = require ("fs");
-const textRef = "./public/txt/vanasonad.txt";
-const logRef = "./public/txt/visitlog.txt";
-const dateET = require("./public/src/dateTimeET.js");
+const textRef = "../public/txt/vanasonad.txt";
+const logRef = "../public/txt/visitlog.txt";
+const dateET = require("../src/dateTimeET.js");
 
 
 
@@ -20,18 +20,18 @@ const külastusAdd = (req, res)=>{
 //app.post("/regvisit", (req, res)=>{
 const külastus = (req, res)=>{
 	console.log(req.body);
-	fs.open("../public/txt/visitlog.txt", "a", (err, file)=>{
+	fs.open("./public/txt/visitlog.txt", "a", (err, file)=>{
 		if(err){
 			throw(err);
 		}
 		else{
-		fs.appendFile("../public/txt/visitlog.txt", req.body.firstNameInput + " " + req.body.lastNameInput + " " + dateET.fullDate() + " " + "kell: " + dateET.fullTime() + "; ", (err)=>{
+		fs.appendFile("./public/txt/visitlog.txt", req.body.firstNameInput + " " + req.body.lastNameInput + " " + dateET.fullDate() + " " + "kell: " + dateET.fullTime() + "; ", (err)=>{
 			if(err){
 				throw(err);
 			}
 			else{
 				console.log("Salvestatud!");
-				res.render("visitregistered");
+				res.render("visitlog");
 			}
 		});
 		}
