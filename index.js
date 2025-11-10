@@ -60,8 +60,7 @@ app.get("/", async (req, res) => {
 			const wmFilename = await watermark(piltData);
 			piltData.filename = wmFilename;
         }
-        res.render("index", { pilt: piltData });
-        
+        res.render("index", { pilt: piltData });        
     } catch(err) {
         console.error("Viga andmebaasi päringul: " + err);
         res.render("index", { pilt: null, error: "Pilid laadimine ebaõnnestus." });       
@@ -108,7 +107,12 @@ app.use("/eestifilm", eestifilmRouter);
 const photoupRouter = require("./routes/photoupRoutes");
 app.use("/galleryphotoupload", photoupRouter);
 
+//Fotogalerii
+const galleryRouter = require("./routes/galleryRoutes");
+app.use("/photogallery", galleryRouter);
 
-
+//Uudised
+const newsRouter = require("./routes/newsRoutes");
+app.use("/news", newsRouter);
 
 app.listen(5101);  

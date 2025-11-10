@@ -58,7 +58,8 @@ const photouploadPagePost = async (req, res)=>{
 };
 
 
+
 module.exports = {
 	photouploadPage,
-	photouploadPagePost	
+	photouploadPagePost
 };
