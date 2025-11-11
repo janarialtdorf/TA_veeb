@@ -8,8 +8,18 @@ const router = express.Router();
 const uploader = multer({dest: "./public/gallery/orig/"});
 
 //kontrollerid
-const {news} = require("../controllers/photouploadControllers");
+const {
+	news,
+	newsPost,
+	newsUpload,
+	newsUploadPost} = require("../controllers/newsControllers");
 	
-router.route("/").get(news);
+router.route("/").get(newsPost);
+
+//router.route("/").post(newsPost);
+
+router.route("/newsupload").get(newsUpload);
+
+router.route("/newsupload").post(newsUploadPost);
 
 module.exports = router;

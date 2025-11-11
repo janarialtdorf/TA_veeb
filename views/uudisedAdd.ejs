@@ -13,22 +13,21 @@
   <hr>
   <ul>
     <li><a href ="/">Avaleht</a></li>
-	<li><a href ="/news/newsupload">Uudise lisamine</a></li>
+	<li><a href ="/news">Tagasi uudiste lehele</a></li>
   </ul>
   <hr>
-  <h2>Uudised</h2>
-<ol>
-	<% newsList.forEach(function(listItem){ %>
-		<li>
-			<%= listItem.news_title %> 
-			<br>
-			<%= listItem.textarea %>
-			<br>
-			<% if(listItem.filename){ %>
-			<img src="/gallery/thumbs/<%= listItem.filename %>" alt="<%= listItem.alttext %>">
-			<% } %>
-		</li>
-	<% }); %>
-	</ol>
+  <h2>Uudise lisamine</h2>
+  <form method="POST">
+    <label for="titleInput">Uudise pealkiri:</label>
+	<input id="titleInput" name="titleInput" type="text">
+	<br>
+	<label for="textInput">Uudise sisu: </label>
+	<input id="textInput" name="textInput" type="text">
+	<br>
+	<label for="photoInput">Pildi id: </label>
+	<input id="photoInput" name="photoInput" type="text">
+	<br>
+	<input type="submit" id="newsSubmit" name="newsSubmit" value="Lae uudis üles">
+  </form>
 </body>
 </html>
