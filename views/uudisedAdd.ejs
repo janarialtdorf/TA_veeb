@@ -17,15 +17,15 @@
   </ul>
   <hr>
   <h2>Uudise lisamine</h2>
-  <form method="POST">
+  <form method="POST" enctype="multipart/form-data">
     <label for="titleInput">Uudise pealkiri:</label>
 	<input id="titleInput" name="titleInput" type="text">
 	<br>
 	<label for="textInput">Uudise sisu: </label>
 	<input id="textInput" name="textInput" type="text">
 	<br>
-	<label for="photoInput">Pildi id: </label>
-	<input id="photoInput" name="photoInput" type="text">
+    <label for="photoFilename">Vali soovitud pildifail:</label>
+	<input id="photoFilename" name="photoFilename" type="file">
 	<br>
 	<input type="submit" id="newsSubmit" name="newsSubmit" value="Lae uudis üles">
   </form>

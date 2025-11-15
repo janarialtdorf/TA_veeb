@@ -20,7 +20,8 @@
 <ol>
 	<% newsList.forEach(function(listItem){ %>
 		<li>
-			<%= listItem.news_title %> 
+			<h3><%= listItem.news_title %></h3>
+			<%= listItem.pub_date_formatted %>
 			<br>
 			<%= listItem.textarea %>
 			<br>

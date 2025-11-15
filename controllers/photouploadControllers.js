@@ -20,6 +20,20 @@ const photouploadPage = (req, res)=>{
 	res.render("galleryphotoupload");
 };
 
+const savePhotoToGallery = async (conn, file, altText, privacy = 3, userId = 1) => {
+    
+    const fileName = "vp_" + Date.now() + ".jpg";
+    
+    await fs.rename(file.path, file.destination + fileName);
+    await sharp(file.destination + fileName).resize(800,600).jpeg({quality: 90}).toFile("./public/gallery/normal/" + fileName);
+    await sharp(file.destination + fileName).resize(100,100).jpeg({quality: 90}).toFile("./public/gallery/thumbs/" + fileName);
+    
+    let sqlReq = "INSERT INTO photos_vp (filename, origname, alttext, privacy, userid) VALUES (?,?,?,?,?)";
+    
+    const [result] = await conn.execute(sqlReq, [fileName, file.originalname, altText, privacy, userId]);
+    
+    return fileName;
+};
 
 //@desc home page for Estonia film section
 //@route GET /galleryphotoupload
@@ -27,22 +41,9 @@ const photouploadPage = (req, res)=>{
 
 const photouploadPagePost = async (req, res)=>{
 	let conn;
-	//console.log(req.body);
-	//console.log(req.file);
 	try{
-		const fileName = "vp_" + Date.now() + ".jpg";
-		//console.log(fileName);
-		await fs.rename(req.file.path, req.file.destination + fileName);
-		//loon normaalsuuruse 800X600
-	    await sharp(req.file.destination + fileName).resize(800,600).jpeg({quality: 90}).toFile("./public/gallery/normal/" + fileName);
-		//loon thumbnail pildi 100X100
-		await sharp(req.file.destination + fileName).resize(100,100).jpeg({quality: 90}).toFile("./public/gallery/thumbs/" + fileName);
 		conn = await mysql.createConnection(dbConf);
-		let sqlReq = "INSERT INTO photos_vp (filename, origname, alttext, privacy, userid) VALUES (?,?,?,?,?)";
-		//Kuna kasutajakontosid veel ei ole, siis määrame userid = 1
-		const userId = 1;
-		const [result] = await conn.execute(sqlReq, [fileName, req.file.originalname, req.body.altInput, req.body.privacyInput, userId]);
-		console.log("Salvestati kirje: " + result.insertId);
+        await savePhotoToGallery(conn, req.file, req.body.altInput, req.body.privacyInput, 1);
 		res.render("galleryphotoupload");
 	}
 	catch(err){
@@ -61,5 +62,7 @@ const photouploadPagePost = async (req, res)=>{
 
 module.exports = {
 	photouploadPage,
-	photouploadPagePost
+	photouploadPagePost,
+	savePhotoToGallery
+	
 };

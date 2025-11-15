@@ -20,6 +20,6 @@ router.route("/").get(newsPost);
 
 router.route("/newsupload").get(newsUpload);
 
-router.route("/newsupload").post(newsUploadPost);
+router.route("/newsupload").post(uploader.single("photoFilename"), newsUploadPost);
 
 module.exports = router;
