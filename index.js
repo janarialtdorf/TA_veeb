@@ -115,4 +115,8 @@ app.use("/photogallery", galleryRouter);
 const newsRouter = require("./routes/newsRoutes");
 app.use("/news", newsRouter);
 
+//konto loomine
+const signupRouter = require("./routes/signupRoutes");
+app.use("/signup", signupRouter);
+
 app.listen(5101);  
